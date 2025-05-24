@@ -1,0 +1,181 @@
+Metadata-Version: 2.2
+Name: llamafactory
+Version: 0.9.3.dev0
+Summary: Unified Efficient Fine-Tuning of 100+ LLMs
+Home-page: https://github.com/hiyouga/LLaMA-Factory
+Author: hiyouga
+Author-email: hiyouga@buaa.edu.cn
+License: Apache 2.0 License
+Keywords: AI,LLM,GPT,ChatGPT,Llama,Transformer,DeepSeek,Pytorch
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.9.0
+Description-Content-Type: text/markdown
+Requires-Dist: transformers!=4.46.*,!=4.47.*,!=4.48.*,<=4.50.0,>=4.41.2; python_version < "3.10" and sys_platform != "darwin"
+Requires-Dist: transformers!=4.46.*,!=4.47.*,!=4.48.0,<=4.50.0,>=4.41.2; python_version >= "3.10" and sys_platform != "darwin"
+Requires-Dist: transformers!=4.46.*,!=4.47.*,!=4.48.*,<=4.49.0,>=4.41.2; sys_platform == "darwin"
+Requires-Dist: datasets<=3.4.1,>=2.16.0
+Requires-Dist: accelerate<=1.5.2,>=0.34.0
+Requires-Dist: peft<=0.15.0,>=0.14.0
+Requires-Dist: trl<=0.9.6,>=0.8.6
+Requires-Dist: tokenizers<=0.21.0,>=0.19.0
+Requires-Dist: gradio<=5.21.0,>=4.38.0
+Requires-Dist: pandas>=2.0.0
+Requires-Dist: scipy
+Requires-Dist: einops
+Requires-Dist: sentencepiece
+Requires-Dist: tiktoken
+Requires-Dist: protobuf
+Requires-Dist: uvicorn
+Requires-Dist: pydantic
+Requires-Dist: fastapi
+Requires-Dist: sse-starlette
+Requires-Dist: matplotlib>=3.7.0
+Requires-Dist: fire
+Requires-Dist: packaging
+Requires-Dist: pyyaml
+Requires-Dist: numpy<2.0.0
+Requires-Dist: av
+Requires-Dist: librosa
+Requires-Dist: tyro<0.9.0
+Provides-Extra: torch
+Requires-Dist: torch>=1.13.1; extra == "torch"
+Provides-Extra: torch-npu
+Requires-Dist: torch==2.4.0; extra == "torch-npu"
+Requires-Dist: torch-npu==2.4.0.post2; extra == "torch-npu"
+Requires-Dist: decorator; extra == "torch-npu"
+Provides-Extra: metrics
+Requires-Dist: nltk; extra == "metrics"
+Requires-Dist: jieba; extra == "metrics"
+Requires-Dist: rouge-chinese; extra == "metrics"
+Provides-Extra: deepspeed
+Requires-Dist: deepspeed<=0.16.4,>=0.10.0; extra == "deepspeed"
+Provides-Extra: liger-kernel
+Requires-Dist: liger-kernel>=0.5.5; extra == "liger-kernel"
+Provides-Extra: bitsandbytes
+Requires-Dist: bitsandbytes>=0.39.0; extra == "bitsandbytes"
+Provides-Extra: hqq
+Requires-Dist: hqq; extra == "hqq"
+Provides-Extra: eetq
+Requires-Dist: eetq; extra == "eetq"
+Provides-Extra: gptq
+Requires-Dist: optimum>=1.17.0; extra == "gptq"
+Requires-Dist: auto-gptq>=0.5.0; extra == "gptq"
+Provides-Extra: awq
+Requires-Dist: autoawq; extra == "awq"
+Provides-Extra: aqlm
+Requires-Dist: aqlm[gpu]>=1.1.0; extra == "aqlm"
+Provides-Extra: vllm
+Requires-Dist: vllm<=0.8.1,>=0.4.3; extra == "vllm"
+Provides-Extra: sglang
+Requires-Dist: sglang[srt]>=0.4.4; extra == "sglang"
+Requires-Dist: transformers==4.48.3; extra == "sglang"
+Provides-Extra: galore
+Requires-Dist: galore-torch; extra == "galore"
+Provides-Extra: apollo
+Requires-Dist: apollo-torch; extra == "apollo"
+Provides-Extra: badam
+Requires-Dist: badam>=1.2.1; extra == "badam"
+Provides-Extra: adam-mini
+Requires-Dist: adam-mini; extra == "adam-mini"
+Provides-Extra: qwen
+Requires-Dist: transformers_stream_generator; extra == "qwen"
+Provides-Extra: minicpm-v
+Requires-Dist: soundfile; extra == "minicpm-v"
+Requires-Dist: torchvision; extra == "minicpm-v"
+Requires-Dist: torchaudio; extra == "minicpm-v"
+Requires-Dist: vector_quantize_pytorch; extra == "minicpm-v"
+Requires-Dist: vocos; extra == "minicpm-v"
+Requires-Dist: msgpack; extra == "minicpm-v"
+Requires-Dist: referencing; extra == "minicpm-v"
+Requires-Dist: jsonschema_specifications; extra == "minicpm-v"
+Requires-Dist: transformers==4.48.3; extra == "minicpm-v"
+Provides-Extra: modelscope
+Requires-Dist: modelscope; extra == "modelscope"
+Provides-Extra: openmind
+Requires-Dist: openmind; extra == "openmind"
+Provides-Extra: swanlab
+Requires-Dist: swanlab; extra == "swanlab"
+Provides-Extra: dev
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+## Installation
+
+> [!IMPORTANT]
+> Installation is mandatory.
+
+```bash
+git clone --depth 1 https://github.com/hiyouga/LLaMA-Factory.git
+cd LLaMA-Factory
+pip install -e ".[torch,metrics]"
+```
+
+Extra dependencies available: torch, torch-npu, metrics, deepspeed, liger-kernel, bitsandbytes, hqq, eetq, gptq, awq, aqlm, vllm, sglang, galore, apollo, badam, adam-mini, qwen, minicpm_v, modelscope, openmind, swanlab, quality
+
+> [!TIP]
+> Use `pip install --no-deps -e .` to resolve package conflicts.
+
+## Training
+
+The bash script would look like this... and you can modify certain parts to fit your own settings.
+
+**NOTE: During SFT training for Qwen-Math, the EOS token must be manually set to <im_end> in the model's configuration.**
+
+```bash
+set -x
+export HF_ENDPOINT=https://hf-mirror.com
+export HF_HOME="/path/to/huggingface" # please set to your hf cache
+huggingface-cli login --token  # please login to your hf
+export WANDB_MODE=online
+export WANDB_PROJECT="SFT"
+wandb login --relogin 0d370d89b0714775ee0b824f07f4c1f5ffa0b494 # please login to your wandb
+
+llamafactory-cli train examples/train_full/qwen25-math-7b_full_sft.yaml # modify qwen25-math-7b_full_sft.yaml
+```
+
+## Evaluation
+cd into the eval folder and run the sh
+```bash
+cd eval # **MUST** cd into the eval folder
+bash eval.sh
+```
+
+The only thing you need to do is to modify the results/checkpoint path, tnat is, for example:
+
+The `["model/global_step_x"]` is the folder your evaluation results would like to be saved, your results will be saved in `eval/outputs/model/global_step_x`
+
+The `"/path/to/your/model/global_step_xx/actor/huggingface"` is the checkpoint save path 
+
+
+```bash
+export CUDA_VISIBLE_DEVICES='x,x,x' # Note: you have to export this for evaluation
+declare -A models=(
+    ["model/global_step_x"]="/path/to/your/model/global_step_xx/actor/huggingface"
+    # NOTE: the checkpoint path must contain /actor/huggingface, because the verl do not default save ckpt in hf format, so we need to merge model first.
+)
+```
+
