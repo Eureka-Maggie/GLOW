@@ -9,6 +9,37 @@ from typing import Iterable, Union, Any
 
 from .examples import get_examples
 
+import re
+
+def extract_and_check_parentheses(generated_response, gt_ans):
+    """
+    一个专门为括号匹配任务设计的提取和检查函数。
+    它能正确处理单个符号的情况。
+
+    Args:
+        generated_response (str): 模型生成的完整回复。
+        gt_ans (str): 标准答案。
+
+    Returns:
+        bool: 是否正确。
+    """
+    extracted_answer = ""
+    # 使用正则表达式查找 \boxed{...} 之间的内容
+    # re.DOTALL 标志让 . 可以匹配包括换行在内的任何字符
+    match = re.search(r'\\boxed{(.*)}', generated_response, re.DOTALL)
+    
+    if match:
+        # group(1) 获取第一个捕获组（也就是括号里的内容）
+        extracted_answer = match.group(1).strip()
+    else:
+        # 如果没有找到 boxed，可以做一个简单的备用处理，比如去掉头尾空格
+        extracted_answer = ""
+
+    print(f"提取出的答案: '{extracted_answer}'")
+    print(f"标准答案: '{gt_ans}'")
+    
+    # 直接进行精确的字符串比较
+    return extracted_answer, extracted_answer == gt_ans.strip()
 
 def set_seed(seed: int = 42) -> None:
     np.random.seed(seed)

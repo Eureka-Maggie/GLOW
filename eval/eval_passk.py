@@ -17,7 +17,8 @@ from utils.math_normalization import *
 from utils.grader import *
 import pickle
 from math import comb
-
+#from ifeval import Evaluator, InputExample, instruction_registry, read_input_examples, read_responses
+#evaluator = Evaluator(instruction_registry)
 # envs.VLLM_HOST_IP="0.0.0.0" or "127.0.0.1"
 
 def parse_list(arg):
@@ -157,6 +158,7 @@ def infer(args):
                         {"role": "user", "content": cur_prompt}
                     ]
                     cur_prompt = get_conversation_prompt_by_messages(tokenizer=tokenizer, messages=messages)
+                    #print("cur_prompt:",cur_prompt)
                 elif args.prompt_type == 'simple-template':
                     cur_prompt = cur_prompt
                 else:
@@ -212,6 +214,25 @@ def infer(args):
     pass_at_k_list = []
     k = args.k
     
+    ###### eval
+    if args.data_name =="IFeval":
+        #转换一下格式
+        ifeval_format_list = []
+        for d in file_outputs:
+            ifeval_format_list.append({
+                "prompt": d["question"],
+                "response": d["generated_responses"][0],
+            })
+        out_file_prefix_ifeval = f'{args.split}_{args.prompt_type}_t{args.temperature}_ifeval'
+        out_file_ifeval = f'{args.output_dir}/{model_name}/{args.data_name}/{out_file_prefix}_k{args.n_sampling}_s{args.start_idx}_e{args.end_idx}_ifeval.jsonl'
+        # 把out_file_ifeval写入jsonl保存
+        with open(out_file_ifeval, "w") as f:
+            for d in ifeval_format_list:
+                f.write(json.dumps(d, ensure_ascii=False) + "\n")
+        input_examples = read_input_examples("eval/data/IFeval/test_ip.jsonl")
+        responses = read_responses("eval/data/IFeval/test_op.jsonl")
+        
+    
     for i in tqdm(range(len(examples)), "check correct..."):
         d = examples[i]
         length_list.extend(file_outputs[i]["generated_length"])
@@ -226,9 +247,17 @@ def infer(args):
                 correct_cnt += 1
             is_correct_list = file_outputs[i]['answers_correctness']
         else:
+            generated_answers = []
+            is_correct_list = []
             generated_responses = file_outputs[i]['generated_responses']
-            generated_answers = [extract_answer(generated_response, args.data_name) for generated_response in generated_responses]
-            is_correct_list = [check_is_correct(generated_answer, gt_ans) for generated_answer in generated_answers]
+            if args.data_name == "bbh_dyck":
+                for response in generated_responses:
+                    extracted_ans, is_corr = extract_and_check_parentheses(response, gt_ans)
+                    generated_answers.append(extracted_ans)
+                    is_correct_list.append(is_corr)
+            else:
+                generated_answers = [extract_answer(generated_response, args.data_name) for generated_response in generated_responses]
+                is_correct_list = [check_is_correct(generated_answer, gt_ans) for generated_answer in generated_answers]
             is_correct = any(is_correct_list)
             if is_correct:
                 correct_cnt += 1
@@ -263,6 +292,7 @@ def infer(args):
         os.rename(temp_out_file, out_file)
 
     length_list_f = []
+    print("length_list:",length_list)
     for i in length_list:
         if i < 5000:
             length_list_f.append(i)  

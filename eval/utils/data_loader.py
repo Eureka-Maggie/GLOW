@@ -45,13 +45,29 @@ def load_data(data_name, split, data_dir='./data'):
             dataset = dataset.select(random.sample(range(len(dataset)), 1000))
         elif data_name == "bbh":
             examples = []
-            for data_name in ["reasoning_about_colored_objects", "penguins_in_a_table",\
-                            "date_understanding", "repeat_copy_logic", "object_counting"]:
-                with open(f"{data_dir}/bbh/bbh/{data_name}.json", "r") as f:
-                    sub_examples = json.load(f)["examples"]
+            # for data_name in ["test"]:
+            for data_name in ["boolean_expressions","causal_judgement","date_understanding","disambiguation_qa",\
+                             "formal_fallacies","geometric_shapes","hyperbaton","logical_deduction_five_objects",\
+                             "logical_deduction_seven_objects","logical_deduction_three_objects","movie_recommendation","multistep_arithmetic_two","navigate",\
+                             "object_counting","penguins_in_a_table","reasoning_about_colored_objects","ruin_names","snarks","sports_understanding",\
+                             "temporal_sequences","tracking_shuffled_objects_five_objects","tracking_shuffled_objects_seven_objects","tracking_shuffled_objects_three_objects","web_of_lies","word_sorting"]:
+                with open(f"{data_dir}/bbh/{data_name}.json", "r") as f:
+                    sub_examples = json.load(f)
                     for example in sub_examples:
                         example['type'] = data_name
                     examples.extend(sub_examples)
+            dataset = Dataset.from_list(examples)
+        elif data_name == "bbh_dyck":
+            examples = []
+            with open(f"{data_dir}/bbh_dyck/dyck_languages.json", "r") as f:
+                sub_examples = json.load(f)
+                for example in sub_examples:
+                    example['type'] = data_name
+                examples.extend(sub_examples)
+            dataset = Dataset.from_list(examples)
+        elif data_name == "IFeval":
+            with open(f"{data_dir}/ifeval/ifeval_format.json", "r") as f:
+                examples = list(load_jsonl(f))
             dataset = Dataset.from_list(examples)
         else:
             raise NotImplementedError(data_name)

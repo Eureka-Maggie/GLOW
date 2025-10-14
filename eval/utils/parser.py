@@ -542,6 +542,8 @@ STRIP_EXCEPTIONS = ["carp_en", "minerva_math"]
 def parse_ground_truth(example: Dict[str, Any], data_name):
     if "answer" in example:
         return None, str(example["answer"])
+    elif "target" in example:
+        return None, str(example["target"])
     else:
         return None, None
 
