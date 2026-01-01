@@ -1,0 +1,47 @@
+### model
+model_name_or_path: /share/home/mhma/models/Qwen2.5-3B
+trust_remote_code: true
+
+### method
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: /share/home/mhma/iclr24/LLaMA-Factory/examples/deepspeed/ds_z2_config.json  # choices: [ds_z0_config.json, ds_z2_config.json, ds_z3_config.json]
+
+### dataset
+dataset_dir: /share/home/mhma/iclr24/datasets/openmath2
+dataset: 3b_math_all #mmlu_correct
+template: qwen
+cutoff_len: 32000
+max_samples: 10000000
+overwrite_cache: true
+preprocessing_num_workers: 32
+dataloader_num_workers: 32
+
+### output
+output_dir: /share/home/mhma/iclr24/models/wo_1_change_loss/1_10/ #saves/qwen2p5_0p5/MMLU_correct/sft
+logging_steps: 1
+plot_loss: true
+overwrite_output_dir: true
+save_only_model: false
+report_to: none  # choices: [none, wandb, tensorboard, swanlab, mlflow]
+
+### train
+remove_unused_columns: false
+per_device_train_batch_size: 4 #8*16
+gradient_accumulation_steps: 1
+learning_rate: 1.0e-5
+num_train_epochs: 20
+lr_scheduler_type: cosine
+warmup_ratio: 0.1
+bf16: true
+ddp_timeout: 180000000
+resume_from_checkpoint: null
+save_strategy: "epoch" 
+# save_strategy: "steps"
+save_steps: 1000     
+flash_attn: fa2
+#enable_liger_kernel: true
+use_unsloth_gc : true
+alpha: 1.0
+beta: 10.0
